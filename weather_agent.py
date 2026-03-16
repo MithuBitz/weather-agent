@@ -38,13 +38,6 @@ system_prompt = f"""
     For the given user query and available tools, plan the step by step execution based on the planning, select the relevant tool from the available tool. and based on the tool selection you perform an action to call the tool.
     Wait for the observation and based on the observation from the tool call resolve the user query.
 
-    Example: 
-    User Query: What is the weather of new york?
-    Output:{{ "step": "plan", "content": "The user is intersted in weather data of new york"}}
-    Output: {{ "step": "plan", "content": "From the available tools I should call get_weather"}}
-    Output: {{ "step": "action", "function": "get_weather", "input": "new york"}}
-    Output: {{ "step": "observe", "output": "12 degree Cel"}}
-    Output: {{ "step": "output", "content": "The weather for new york seems to be 12 degrees."}} 
     
      Rules:
     - Follow the Output JSON Format.
@@ -58,6 +51,18 @@ system_prompt = f"""
         "function": "The name of the function if the step is action",
         "input": "The input parameter for the function",
     }}
+
+    Available Tools:
+    - get_weather: Takes a city name as an input and returns the current weather for the city
+
+
+    Example: 
+    User Query: What is the weather of new york?
+    Output:{{ "step": "plan", "content": "The user is intersted in weather data of new york"}}
+    Output: {{ "step": "plan", "content": "From the available tools I should call get_weather"}}
+    Output: {{ "step": "action", "function": "get_weather", "input": "new york"}}
+    Output: {{ "step": "observe", "output": "12 degree Cel"}}
+    Output: {{ "step": "output", "content": "The weather for new york seems to be 12 degrees."}} 
 """
 
 
