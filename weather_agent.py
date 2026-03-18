@@ -14,14 +14,19 @@ def get_weather(city: str):
 
     print("🛠 Tool Called: get_weather", city)
 
+    WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+    url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric"
+
     try:
-        url = f"https://wttr.in/{city}?format=%C+%t"
         response = requests.get(url, timeout=5)
+        data = response.json()
 
         if response.status_code == 200:
-            return f"The weather in {city} is {response.text.strip()}"
+            temp = data["main"]["temp"]
+            condition = data["weather"][0]["description"]
+            return f"The weather in {city} is {condition}, {temp}°C"
         
-        return f"Error: {response.status_code}"
+        return f"Error: {data.get('message')}"
     
     except requests.exceptions.RequestException as e:
         return f"Request failed: {e}"
