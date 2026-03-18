@@ -12,14 +12,19 @@ client = OpenAI(api_key=os.getenv("OPENAI_KEY"))
 # Define a function to get weather
 def get_weather(city: str):
 
-    print(" 🛠 Tool Called: get_weather", city)
-    url = f"https://wttr.in/{city}?format=%C+%t"
-    response = requests.get(url)
+    print("🛠 Tool Called: get_weather", city)
 
-    if response.status_code == 200:
-        return f"The weather in {city} is {response.text}"
+    try:
+        url = f"https://wttr.in/{city}?format=%C+%t"
+        response = requests.get(url, timeout=5)
+
+        if response.status_code == 200:
+            return f"The weather in {city} is {response.text.strip()}"
+        
+        return f"Error: {response.status_code}"
     
-    return "Unable to fetch weather information"
+    except requests.exceptions.RequestException as e:
+        return f"Request failed: {e}"
 
 
 available_tools = {
